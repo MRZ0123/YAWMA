@@ -172,6 +172,14 @@ void setup() {
   mqttClient.onPublish(onMqttPublish);
 
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+
+#if ASYNC_TCP_SSL_ENABLED
+  mqttClient.setSecure(MQTT_SECURE);
+  if (MQTT_SECURE) {
+    mqttClient.addServerFingerprint((const uint8_t*)MQTT_SERVER_FINGERPRINT);
+  }
+#endif
+
   connectToWifi();
 }
 
