@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ESP32 Weather Station</title>
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"
+      rel="stylesheet"
+    />
+    <style>
+      html {
+        font-family: "Open Sans", sans-serif;
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        color: #444;
+      }
+      body {
+        margin: 0;
+      }
+      h1 {
+        margin: 50px auto 30px;
+      }
+      .side-by-side {
+        display: table-cell;
+        vertical-align: middle;
+        position: relative;
+      }
+      .text {
+        font-weight: 600;
+        font-size: 19px;
+        width: 200px;
+      }
+      .reading {
+        font-weight: 300;
+        font-size: 50px;
+        padding-right: 25px;
+      }
+      .temperature .reading {
+        color: #111;
+      }
+      .humidity .reading {
+        color: #3b97d3;
+      }
+      .pressure .reading {
+        color: #26b99a;
+        letter-spacing: 0;
+      }
+      .altitude .reading {
+        color: #955ba5;
+      }
+      .superscript {
+        font-size: 17px;
+        font-weight: 600;
+        position: absolute;
+        top: 10px;
+      }
+      .data {
+        padding: 10px;
+      }
+      .container {
+        display: table;
+        margin: 0 auto;
+      }
+      .icon {
+        width: 65px;
+      }
+      ::after {
+        font-weight: 300;
+        font-size: 50px;
+      }
+      .warm::after {
+        content: "☀️";
+      }
+      .kalt::after {
+        content: "❄️";
+      }
+      .wet::after {
+        content: "💧";
+      }
+      .moist::after {
+        content: "🥦";
+      }
+      .dry::after {
+        content: "🪨";
+      }
+      .highp::after {
+        content: "▪️";
+      }
+      .medp::after {
+        content: "◾";
+      }
+      .lowp::after {
+        content: "⬛";
+      }
+      .high::after {
+        content: "✈️";
+      }
+      .low::after {
+        content: "🏠";
+      }
+    </style>
+  </head>
+  <h1>YAWMA</h1>
+  <div class="container">
+    <div class="data temperature">
+      <div class="side-by-side text">Temperature</div>
+      <div class="side-by-side reading">
+        (int)temperature <span class="superscript">°C</span>
+      </div>
+    </div>
+    <div class="data humidity">
+      <div class="side-by-side text">Humidity</div>
+      <div class="side-by-side reading">
+        (int)humidity <span class="superscript">%</span>
+      </div>
+    </div>
+    <div class="data pressure">
+      <div class="side-by-side text">Pressure</div>
+      <div class="side-by-side reading">
+        (int)pressure <span class="superscript">hPa</span>
+      </div>
+    </div>
+    <div class="data altitude">
+      <div class="side-by-side text">Altitude</div>
+      <div class="side-by-side reading">
+        (int)altitude <span class="superscript">m</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    let readings = document.querySelectorAll(".reading");
+    let elements = document.querySelectorAll(".side-by-side.text");
+    if (readings[0].innerText.split("\n")[0] < 15) {
+      elements[0].classList.remove("warm");
+      elements[0].classList.add("kalt");
+    } else {
+      elements[0].classList.remove("kalt");
+      elements[0].classList.add("warm");
+    }
+    if (readings[1].innerText.split("\n")[0] < 40) {
+      elements[1].classList.remove("moist", "wet");
+      elements[1].classList.add("dry");
+    } else if (readings[1].innerText.split("\n")[0] > 60) {
+      elements[1].classList.remove("dry", "moist");
+      elements[1].classList.add("wet");
+    } else {
+      elements[1].classList.remove("dry", "wet");
+      elements[1].classList.add("moist");
+    }
+    if (readings[2].innerText.split("\n")[0] < 950) {
+      elements[2].classList.remove("highp", "medp");
+      elements[2].classList.add("lowp");
+    } else if (readings[2].innerText.split("\n")[0] > 1000) {
+      elements[2].classList.remove("lowp", "medp");
+      elements[2].classList.add("highp");
+    } else {
+      elements[2].classList.remove("lowp", "highp");
+      elements[2].classList.add("medp");
+    }
+    if (readings[3].innerText.split("\n")[0] < 430) {
+      elements[3].classList.remove("high");
+      elements[3].classList.add("low");
+    } else {
+      elements[3].classList.remove("low");
+      elements[3].classList.add("high");
+    }
+  </script>
+</html>
