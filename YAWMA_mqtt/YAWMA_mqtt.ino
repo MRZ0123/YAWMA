@@ -31,6 +31,7 @@ const char* PubTopic = "test/lol";  // Topic to publish
 #define MQTT_PUB_TEMP_BME280 "esp32/bme280/temperature"
 #define MQTT_PUB_HUM_BME280  "esp32/bme280/humidity"
 #define MQTT_PUB_PRES_BME280 "esp32/bme280/pressure"
+#define MQTT_PUB_ALT_BME280 "esp32/bme280/altitude"
 
 Adafruit_BME280 bme;
 
