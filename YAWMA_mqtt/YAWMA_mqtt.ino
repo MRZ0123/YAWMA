@@ -14,6 +14,8 @@ extern "C" {
 
 #include <AsyncMQTT_ESP32.h>
 
+#define SEALEVELPRESSURE_HPA (1013.25)
+
 #if ASYNC_TCP_SSL_ENABLED
 #define MQTT_SECURE true
 const uint8_t MQTT_SERVER_FINGERPRINT[] = { 0xA9, 0xD9, 0xD0, 0xAF, 0x37, 0xBE, 0xDA, 0x51, 0x7A, 0x7F, 0x8B, 0xA6, 0xC4, 0xDC, 0xD0, 0x46, 0xA1, 0xEC, 0x9C, 0xAC };
@@ -140,6 +142,11 @@ void loop() {
     uint16_t packetIdPub5 = mqttClient.publish(MQTT_PUB_PRES_BME280, 1, true, String(pressure_BME280).c_str());                            
     Serial.printf("Publishing on topic %s at QoS 1, packetId: %i ", MQTT_PUB_PRES_BME280, packetIdPub5);
     Serial.printf("Message: %.2f \n", pressure_BME280);
+
+    // Publish an MQTT message on topic esp32/bme280/altitude
+    uint16_t packetIdPub4 = mqttClient.publish(MQTT_PUB_ALT_BME280, 1, true, String(altitude_BME280).c_str());                            
+    Serial.printf("Publishing on topic %s at QoS 1, packetId: %i ", MQTT_PUB_ALT_BME280, packetIdPub4);
+    Serial.printf("Message: %.2f \n", altitude_BME280);
 
   }
 }
