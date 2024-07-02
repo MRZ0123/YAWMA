@@ -10,16 +10,22 @@ extern "C" {
 #include <Wire.h>
 #include <Adafruit_BME280.h>
 
-//replace with your network credentials
-#define WIFI_SSID "BS4 PTR-A0"
-#define WIFI_PASSWORD "SAE_sucks"
+#define ASYNC_TCP_SSL_ENABLED true // false
 
-#define MQTT_USER "wroomImAnESP"
-#define MQTT_PASS "meepmeepdoesthecar!\"§123"
+#include <AsyncMQTT_ESP32.h>
+
+#if ASYNC_TCP_SSL_ENABLED
+#define MQTT_SECURE true
+const uint8_t MQTT_SERVER_FINGERPRINT[] = { 0xA9, 0xD9, 0xD0, 0xAF, 0x37, 0xBE, 0xDA, 0x51, 0x7A, 0x7F, 0x8B, 0xA6, 0xC4, 0xDC, 0xD0, 0x46, 0xA1, 0xEC, 0x9C, 0xAC };
+const char* PubTopic = "test/lol";  // Topic to publish
+#define MQTT_PORT 8883
+#else
+const char* PubTopic = "test/lol";  // Topic to publish
+#define MQTT_PORT 1883
+#endif
 
 // Raspberry Pi Mosquitto MQTT Broker 192.168.178.65
 #define MQTT_HOST IPAddress(192, 168, 25, 109)
-#define MQTT_PORT 1883
 
 //MQTT Topics
 #define MQTT_PUB_TEMP_BME280 "esp32/bme280/temperature"
