@@ -159,7 +159,7 @@ void setup() {
   }
   delay(1000);
 
-  Serial.print("\nStarting YAW;A_mqtt on ");
+  Serial.print("\nStarting YAWMA_mqtt on ");
   Serial.println(ARDUINO_BOARD);
   Serial.println(ASYNC_MQTT_ESP32_VERSION);
 
