@@ -92,7 +92,13 @@ void printSeparationLine() {
 }
 
 void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
+  Serial.print("Connected to MQTT broker: ");
+  Serial.print(MQTT_HOST);
+  Serial.print(", port: ");
+  Serial.println(MQTT_PORT);
+  Serial.printf("Topics: %s, %s, %s, %s\n", MQTT_PUB_TEMP_BME280, MQTT_PUB_HUM_BME280, MQTT_PUB_PRES_BME280, MQTT_PUB_ALT_BME280);
+
+  printSeparationLine();
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
   printSeparationLine();
@@ -100,13 +106,42 @@ void onMqttConnect(bool sessionPresent) {
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
   Serial.println("Disconnected from MQTT.");
+  switch(reason){
+    case AsyncMqttClientDisconnectReason::TCP_DISCONNECTED:
+      Serial.println("Reason: TCP_DISCONNECTED");
+      break;
+    case AsyncMqttClientDisconnectReason::MQTT_UNACCEPTABLE_PROTOCOL_VERSION:
+      Serial.println("Reason: MQTT_UNACCEPTABLE_PROTOCOL_VERSION");
+      break;
+    case AsyncMqttClientDisconnectReason::MQTT_IDENTIFIER_REJECTED:
+      Serial.println("Reason: MQTT_IDENTIFIER_REJECTED");
+      break;
+    case AsyncMqttClientDisconnectReason::MQTT_SERVER_UNAVAILABLE:
+      Serial.println("Reason: MQTT_SERVER_UNAVAILABLE");
+      break;
+    case AsyncMqttClientDisconnectReason::MQTT_MALFORMED_CREDENTIALS:
+      Serial.println("Reason: MQTT_MALFORMED_CREDENTIALS");
+      break;
+    case AsyncMqttClientDisconnectReason::MQTT_NOT_AUTHORIZED:
+      Serial.println("Reason: MQTT_NOT_AUTHORIZED");
+      break;
+    case AsyncMqttClientDisconnectReason::ESP8266_NOT_ENOUGH_SPACE:
+      Serial.println("Reason: ESP8266_NOT_ENOUGH_SPACE");
+      break;
+    case AsyncMqttClientDisconnectReason::TLS_BAD_FINGERPRINT:
+      Serial.println("Reason: TLS_BAD_FINGERPRINT");
+      break;
+    default:
+      break;
+  }
+
   if (WiFi.isConnected()) {
     xTimerStart(mqttReconnectTimer, 0);
   }
 }
 
-void onMqttPublish(uint16_t packetId) {
-  Serial.print("Publish acknowledged.");
+void onMqttPublish(const uint16_t& packetId) {
+  Serial.println("Publish acknowledged");
   Serial.print("  packetId: ");
   Serial.println(packetId);
 }
@@ -121,8 +156,14 @@ void setup() {
   }
   delay(1000);
 
-  mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0, reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
-  wifiReconnectTimer = xTimerCreate("wifiTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0, reinterpret_cast<TimerCallbackFunction_t>(connectToWifi));
+  Serial.print("\nStarting YAW;A_mqtt on ");
+  Serial.println(ARDUINO_BOARD);
+  Serial.println(ASYNC_MQTT_ESP32_VERSION);
+
+  mqttReconnectTimer = xTimerCreate("mqttTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0,
+                                    reinterpret_cast<TimerCallbackFunction_t>(connectToMqtt));
+  wifiReconnectTimer = xTimerCreate("wifiTimer", pdMS_TO_TICKS(2000), pdFALSE, (void*)0,
+                                    reinterpret_cast<TimerCallbackFunction_t>(connectToWifi));
 
   WiFi.onEvent(WiFiEvent);
 
