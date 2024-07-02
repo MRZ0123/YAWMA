@@ -37,9 +37,7 @@ const char* PubTopic = "test/lol";  // Topic to publish
 
 Adafruit_BME280 bme;
 
-const int SensorDataPin = 4;   
-  
-float temperature_BME280, humidity_BME280, pressure_BME280;   //variables for BME280
+float temperature_BME280, humidity_BME280, pressure_BME280, altitude_BME280;   //variables for BME280
 
 AsyncMqttClient mqttClient;
 TimerHandle_t mqttReconnectTimer;
