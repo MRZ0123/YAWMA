@@ -54,20 +54,35 @@ void connectToMqtt() {
   mqttClient.connect();
 }
 
+bool was_connected = false;
+bool is_connected = false;
+
 void WiFiEvent(WiFiEvent_t event) {
+  wl_status_t current_status = WiFi.status();
   Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case 16: // IP_EVENT_STA_GOT_IP
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
+  Serial.printf("[WiFi-status] status: %d\n", current_status);
+  switch(current_status){
+    case WL_CONNECTED:
+      is_connected=true;
       break;
-    case WIFI_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      xTimerStop(mqttReconnectTimer, 0); 
-      xTimerStart(wifiReconnectTimer, 0);
+    case WL_DISCONNECTED:
+    case WL_NO_SSID_AVAIL:
+    case WL_CONNECTION_LOST:
+    case WL_CONNECT_FAILED:
+      is_connected=false;
       break;
+    default:
+      break;
+  }
+  if (is_connected && !was_connected) {
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+    connectToMqtt();
+  } else if(!is_connected && was_connected) {
+    Serial.println("WiFi lost connection");
+    xTimerStop(mqttReconnectTimer, 0);  // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+    xTimerStart(wifiReconnectTimer, 0);
   }
 }
 
