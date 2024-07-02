@@ -76,10 +76,16 @@ void WiFiEvent(WiFiEvent_t event) {
   }
 }
 
+
+void printSeparationLine() {
+  Serial.println("************************************************");
+}
+
 void onMqttConnect(bool sessionPresent) {
   Serial.println("Connected to MQTT.");
   Serial.print("Session present: ");
   Serial.println(sessionPresent);
+  printSeparationLine();
 }
 
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
@@ -113,6 +119,7 @@ void setup() {
   mqttClient.onConnect(onMqttConnect);
   mqttClient.onDisconnect(onMqttDisconnect);
   mqttClient.onPublish(onMqttPublish);
+
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   connectToWifi();
 }
