@@ -1,3 +1,5 @@
+#include "credentials.h"
+
 #include <WiFi.h>
 extern "C" {
   #include "freertos/FreeRTOS.h"
