@@ -134,8 +134,8 @@ void loop() {
     Serial.printf("Message: %.2f \n", temperature_BME280);
 
     // Publish an MQTT message on topic esp32/bme280/humidity
-    uint16_t packetIdPub4 = mqttClient.publish(MQTT_PUB_HUM_BME280, 1, true, String(humidity_BME280).c_str());                            
-    Serial.printf("Publishing on topic %s at QoS 1, packetId: %i ", MQTT_PUB_HUM_BME280, packetIdPub4);
+    uint16_t packetIdPub2 = mqttClient.publish(MQTT_PUB_HUM_BME280, 1, true, String(humidity_BME280).c_str());                            
+    Serial.printf("Publishing on topic %s at QoS 1, packetId: %i ", MQTT_PUB_HUM_BME280, packetIdPub2);
     Serial.printf("Message: %.2f \n", humidity_BME280);
     
     // Publish an MQTT message on topic esp32/bme280/pressure
