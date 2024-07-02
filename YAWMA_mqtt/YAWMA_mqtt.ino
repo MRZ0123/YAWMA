@@ -126,6 +126,7 @@ void loop() {
     temperature_BME280 = bme.readTemperature();
     humidity_BME280 = bme.readHumidity();
     pressure_BME280 = bme.readPressure() / 100.0F;
+    altitude_BME280 = bme.readAltitude(SEALEVELPRESSURE_HPA);
 
 
     // Publish an MQTT message on topic esp32/bme280/temperature
