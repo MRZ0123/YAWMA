@@ -1,0 +1,50 @@
+# Dokumentation Hardware und Software
+
+## Erste Unterrichtsstunde:
+
+In der ersten Unterrichtsstunde fand zunächst die Gruppenfindung statt, gefolgt von der Erstellung eines Teams-Chats zur effizienten Kommunikation. Anschließend wurde die Suche nach möglichen Kollaborationstools in Angriff genommen. Wir entschieden uns für VSCode und installierten die Live Share Extension, um kollaboratives Arbeiten zu ermöglichen. Nach der Installation testeten wir die Live Share Funktion gemeinsam, um sicherzustellen, dass sie funktionierte.
+
+## Zweite Unterrichtsstunde:
+
+Während der zweiten Unterrichtsstunde installierten wir die C/C++ Extension in VSCode sowie die Arduino Extension. Danach folgte die Installation des ESP32 Treibers im Board Manager und der Treiber für den BME280 sowie den SSD1306_OLED. Wir wählten das ESP32-WROOM-DA Board und den korrekten COM Port aus. Allerdings traten Fehler in der IntelliSense und beim Kompilieren auf, dass die Bibliotheken nicht gefunden werden konnten, obwohl sie bereits installiert waren. (Fehler "update your include path").
+
+Um unsere Zusammenarbeit zu verbessern, erstellten wir ein Git Repository für alle Projektdaten (YAWMA) und luden alle Teammitglieder zum GitHub Repository ein. Der Source Code wurde von Teams heruntergeladen und ins GitHub Repository importiert. Zusätzlich erhielten die Teammitglieder ein Tutorial zu git, wie man bei aktiver Branch Protection einen eigenen Branch erstellt, diesen veröffentlicht und darauf Daten zu kommitten und zu pushen. Anschließend wurde ihnen gezeigt, dass man um die Änderungen auf dem eigenen Branch in den Main Branch zu bringen eine Pull Request starten muss, bei der mindestends ein anderes Teammitglied die Änderungen überprüfen und bestätigen muss, bevor die Pull Request auf den Main-Branch gemergt werden kann.
+
+## Private Recherche und Problemlösung:
+
+Zu Hause recherchierte Manuel nach den Ursachen für die Fehler in VSCode. Er entfernte den .vscode Ordner und baute das Projekt via "Arduino: Initialize" neu, was leider den gleichen Fehler auftreten ließ. Weitere Recherche führte zur Installation einer benutzerdefinierten arduino-cli, aber auch dies löste das Problem nicht. Nach dem Dursuchen der ESP32-WROOM-DA Dokumentation von Espressif und dem Installieren der Espressif Extension in VSCode komplilierte und installierte er alle Espressif Treiber von deren GitHub Repository manuell, allerdings bestand der Fehler weiterhin.
+
+Daraufhin wurde die PlatformIO Extension in VSCode sowie die Legacy Arduino IDE installiert und der Pfad der legacy Arduino IDE in die Einstellungen der Arduino Extension in VSCode importiert. Trotz dieser Bemühungen blieb der Fehler bestehen. Manuel entschloss sich, alle Extensions und Treiber zu deinstallieren und die Arduino Extension sowie die C/C++ Extension erneut zu installieren. Danach wurde der ESP32 Treiber von Espressif im Board Manager installiert und kompiliert sowie alle Espressif Treiber erneut manuell installiert.
+
+## Erstes Gruppentreffen am Dienstag:
+
+Beim ersten Gruppentreffen am Dienstag entschieden wir uns für das Design der Website und exportierten den HTML Code in eine eigene HTML Datei. Diese wurde bearbeitet, indem der Name geändert und alle Klassen für die Emojis im ::after Pseudoelement hinzugefügt wurden. Wir erstellten die Logik für die Auswahl der Pseudoelement-Klassen und wendeten diese auf jeden Wert an. Die HTML Datei war somit fertiggestellt.
+
+## Weitere private Recherchen:
+
+Zu Hause setzte Manuel seine Recherchen fort, um den VSCode Fehler zu beheben. Er band teilweise manuell die Pfade der Treiber in die IncludePaths Einstellung der C/C++ Extension ein. Dadurch funktionierte die IntelliSense mit deutlich weniger Fehlern. Demnach probierte er die Pfade aller benötigten Header Dateien zu finden und der IncludePaths Einstellung zuzufügen. Dies schlug allerdings fehl als das Größenlimit der Einstellung erreicht war.
+
+## Dritte Unterrichtsstunde:
+
+In der dritten Unterrichtsstunde wechselten wir auf Svens Windows Laptop, nachdem das Projekt auf dem Linux Laptop nicht funktioniert hatte um sicherzustellen, dass kein Hardwareproblem am esp32 vorliegt. Wir installierten die Arduino IDE auf dem Laptop und die benötigte Library unter `Tools -> Libraries: bme280`. Dann fügten wir die Boardmanager URL hinzu (https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json), installierten das ESP32 Paket von Espressif und luden die Treiber herunter und entpackten und installierten die .inf Datei. Nachdem wir das Board (ESP32 WROOM DA) und den COM Port ausgewählt hatten, führten wir einen Test mit einer einfachen "Hello World" Anwendung durch, der jedoch fehlschlug, da keine Kommunikation mit dem Board hergestellt werden konnte (Fehler mit esptool.py).
+
+Weitere Tests mit einem USB Type A Kabel statt einem USB Type C Kabel sowie einem neuen ESP32 Controller schlugen ebenfalls fehl und gaben den gleichen Fehler zurück. Nach Rücksprache und Debugging mit Herrn Rica-Mendez wechselten wir auf die neue Arduino IDE v2 auf Manuels Laptop. Mit der Arduino IDE v2 funktionierten sowohl IntelliSense als auch das Kompilieren; der Upload auf den ESP32 schlug jedoch wegen eines Hardwarefehlers fehl. Nachdem wir das Breadboard ausgetauscht hatten, funktionierte der Upload einwandfrei. Wir wählten die YAWMA_wlan Datei aus, importierten den WLAN Source Code von Herrn Rica-Mendez und lasen die BME280 Dokumentation durch. Nach dem Verkabeln des BME280 Sensors mit den Pins G27 und G25 stellte sich heraus, dass dies nicht funktionierte. Nach Überprüfung der Pin-Belegung des ESP32-WROOM-DA in der Espressif-Dokumentation änderten wir die Pins auf die korrekten SCL und SDA Pins und änderten die SSID sowie das Passwort auf die des eigenen Hotspots. Nachdem wir die HTML Datei minifiziert und in kleinere Strings aufgeteilt hatten, bauten wir die Messdaten in die Strings ein, verifizierten und luden den Sketch auf den ESP32 hoch. Dies funktionierte erfolgreich, und wir machten Fotos mit Jugis Handy zu Dokumentationszwecken und nahmen den ESP32 mit um weiter privat daran arbeiten zu können.
+
+## Mehr private Recherchen:
+
+Manuel wollte trotzdem, dass das programmieren des Microcontrollers in VSCode funktioniert und beschäftigte sich zu Hause weiter mit den Fehlern in VSCode. Nachdem die Custom Arduino-CLI deinstalliert und das Projekt neu mit der Arduino Extension initialisiert wurde, versuchte er nochmals die Pfade der fehlenden Headerdateien in die Einstellung der C/C++ Extension einzubinden. Dabei erstellte die Arduino Extension überraschenderweise eine eigene "Arduino" Konfiguration mit Include Paths von alleine. Mit dieser neuen Arduino Konfiguration funktionierte IntelliSense teilweise, aber das Kompilieren schlug immer noch fehl.
+
+Zusätzlich wurde weiterhin versucht, die Anzeige von Emojis und dem Grad-Symbol in der Weboberfläche des ESP32s zu korrigieren. Zur richtigen Anzeige mussten Sonderzeichen escaped werden. Nachdem die Emojis im CSS und das Grad-Symbol im HTML escaped waren, funktionierte die Anzeige der Weboberfläche im Browser einwandfrei.
+
+Nach dieser kurzen Abwechslung hat Manuel weiter über den Kompilierungsfehler in VSCode recherchiert. Nach dem Umstellen der Einstellung "C_Cpp.intelliSenseEngine" auf "Tag Parser", wodurch keine IntelliSense Fehler mehr auftraten, das Kompilieren funktionierte und der Upload mit VSCode ebenfalls gelang.
+
+## Zweites Gruppentreffen am Samstag:
+
+Zu Beginn wurde entschieden, dass man als weiteres Projekt die Übertragung der Sensordaten über MQTT angehen sollte, da dies unsere Sicherheitsbedenken über eine MITM Attacke aufheben würde, da über MQTT eine Authentifizierung und Verschlüsselung über TLS möglich ist. Die YAWMA_mqtt Datei erstellt und der Source Code von Herrn Rica-Mendez heruntergeladen. Anschließend setzten wir die SSID und das Passwort unseres eigenen Hotspots ein.
+Wir installierten den Mosquitto Broker auf einem Linux Laptop, der sich im gleichen Netzwerk wie der ESP32 befindet. Danach änderten wir die Host-Adresse im Source Code auf die IP-Adresse des Laptops. Zudem installierten wir den Mosquitto MQTT Client auf dem Linux Laptop.
+Es wurde ein Test durchgeführt um die Funktionalität des MQTT Brokers zu überprüfen, indem wir mit dem Mosquitto MQTT Client auf ein Topic des lokalen MQTT Brokers subscribten und mit einer weiteren Instanz des Mosquitto MQTT Clients Nachrichten an dieses Topic veröffentlichten. Diese Tests verliefen erfolgreich.
+
+Im Source Code von Herrn Rica Mendez wurde die Bibliothek AsyncMqttClient verwendet, also suchten wir den Ursprung dieser Bibliothek online. Wir fanden diese Bibliothek auf GitHub (github.com/marvinroger). Wir fanden die Dokumentation unter github.com/marvinroger/async-mqtt-client/tree/develop/docs und installierten manuell die AsyncMqttClient Bibliothek sowie die AsyncTCP Bibliothek, die eine Abhängigkeit der AsyncMqttClient Bibliothek ist. Danach subscribten wir mit dem Mosquitto MQTT Client die Topics, auf die der ESP32 publishen würde, um das Programm des ESP32 zu testen.  
+
+Obwohl sich der ESP32 laut AP mit dem Hotspot verbinden konnte, wurde keine MQTT-Session erstellt, der ESP32 selbst bemerkte nicht, dass er mit dem Hotspot verbunden war und es kamen keine MQTT-Nachrichten an. Wir debuggen den Programmcode und stellten fest, dass bei uns andere wifi.h Events ausgelöst wurden als bei marvinroger. Wir änderten den Programmcode entsprechend auf die "korrekten" wifi.h Event-Codes. Dadurch erkannte der ESP32, dass er sich mit dem Hotspot verbunden hat, aber es wurde keine MQTT session erstellt und es kamen keine Nachrichten an.
+Bei der weiteren Fehlersuche stellten wir fest, dass der MQTT Broker möglicherweise nur auf localhost hörte. Wir änderten die Mosquitto Konfiguration, um anonyme Publikationen zu erlauben und erweiterten das Listening auf das lokale Netzwerk. Nach dieser Anpassung funktionierte die Verbindung einwandfrei.
