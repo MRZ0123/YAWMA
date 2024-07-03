@@ -18,8 +18,10 @@
         socket.emit("my event", { data: "I'm connected!" });
       });
       socket.on("mqtt_message", (data) => {
-        document.querySelector(`.${data['topic']} > .reading > span`).innerText=data['payload']
-        console.log(data);
+        document.querySelector(
+          `.${data["topic"]} > .reading > span`
+        ).innerText = data["payload"];
+        update_emojis();
       });
     </script>
     <style>
@@ -144,42 +146,45 @@
     </div>
   </div>
   <script>
-    let readings = document.querySelectorAll(".reading");
-    let elements = document.querySelectorAll(".side-by-side.text");
-    if (readings[0].innerText.split("\n")[0] < 15) {
-      elements[0].classList.remove("warm");
-      elements[0].classList.add("kalt");
-    } else {
-      elements[0].classList.remove("kalt");
-      elements[0].classList.add("warm");
+    function update_emojis() {
+      let readings = document.querySelectorAll(".reading");
+      let elements = document.querySelectorAll(".side-by-side.text");
+      if (readings[0].innerText.split("\n")[0] < 15) {
+        elements[0].classList.remove("warm");
+        elements[0].classList.add("kalt");
+      } else {
+        elements[0].classList.remove("kalt");
+        elements[0].classList.add("warm");
+      }
+      if (readings[1].innerText.split("\n")[0] < 40) {
+        elements[1].classList.remove("moist", "wet");
+        elements[1].classList.add("dry");
+      } else if (readings[1].innerText.split("\n")[0] > 60) {
+        elements[1].classList.remove("dry", "moist");
+        elements[1].classList.add("wet");
+      } else {
+        elements[1].classList.remove("dry", "wet");
+        elements[1].classList.add("moist");
+      }
+      if (readings[2].innerText.split("\n")[0] < 950) {
+        elements[2].classList.remove("highp", "medp");
+        elements[2].classList.add("lowp");
+      } else if (readings[2].innerText.split("\n")[0] > 1000) {
+        elements[2].classList.remove("lowp", "medp");
+        elements[2].classList.add("highp");
+      } else {
+        elements[2].classList.remove("lowp", "highp");
+        elements[2].classList.add("medp");
+      }
+      if (readings[3].innerText.split("\n")[0] < 430) {
+        elements[3].classList.remove("high");
+        elements[3].classList.add("low");
+      } else {
+        elements[3].classList.remove("low");
+        elements[3].classList.add("high");
+      }
     }
-    if (readings[1].innerText.split("\n")[0] < 40) {
-      elements[1].classList.remove("moist", "wet");
-      elements[1].classList.add("dry");
-    } else if (readings[1].innerText.split("\n")[0] > 60) {
-      elements[1].classList.remove("dry", "moist");
-      elements[1].classList.add("wet");
-    } else {
-      elements[1].classList.remove("dry", "wet");
-      elements[1].classList.add("moist");
-    }
-    if (readings[2].innerText.split("\n")[0] < 950) {
-      elements[2].classList.remove("highp", "medp");
-      elements[2].classList.add("lowp");
-    } else if (readings[2].innerText.split("\n")[0] > 1000) {
-      elements[2].classList.remove("lowp", "medp");
-      elements[2].classList.add("highp");
-    } else {
-      elements[2].classList.remove("lowp", "highp");
-      elements[2].classList.add("medp");
-    }
-    if (readings[3].innerText.split("\n")[0] < 430) {
-      elements[3].classList.remove("high");
-      elements[3].classList.add("low");
-    } else {
-      elements[3].classList.remove("low");
-      elements[3].classList.add("high");
-    }
+    update_emojis();
   </script>
   <script></script>
 </html>
