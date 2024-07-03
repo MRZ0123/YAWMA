@@ -5,7 +5,6 @@ extern "C" {
 }
 #include <AsyncMqttClient.h>
 #include <Wire.h>
-#include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
 //replace with your network credentials
@@ -25,8 +24,6 @@ extern "C" {
 #define MQTT_PUB_PRES_BME280 "esp32/bme280/pressure"
 
 Adafruit_BME280 bme;
-
-const int SensorDataPin = 4;   
   
 float temperature_BME280, humidity_BME280, pressure_BME280;   //variables for BME280
 
